@@ -1,0 +1,124 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+@model List<Acada.FrontEnd.Models.ProductDto>
+
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+</div>
+
+<div class="card">
+    <div class="card-header">
+        <div class="d-flex justify-content-between">
+            <span>Products</span>
+            <button class="btn btn-primary" onclick="OpenAdd()">+ Add</button>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th class="col-1">Id</th>
+                        <th class="col-2">Name</th>
+                        <th class="col-4">Description</th>
+                        <th class="col-1">Price</th>
+                        <th class="col- ">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if(Model.Count == 0)
+                    {
+                        <tr>
+                            <td class="text-center" colspan="5" >No Data Found</td>
+                        </tr>
+                    }
+                    else
+                    {
+                        @foreach(var item in Model)
+                        {
+                            <tr>
+                                <td>@item.Id</td>
+                                <td>@item.Name</td>
+                                <td>@item.Description</td>
+                                <td>@item.Price</td>
+                                <td>
+                                    <a href="/home/get/@item.Id" class="btn btn-primary">View</a>
+                                    <button class="btn btn-info" onclick="OpenUpdate(@item.Id,'@item.Name','@item.Description',@item.Price)">Edit</button>
+                                    <button class="btn btn-danger" onclick="DeleteProduct(@item.Id,'@item.Name')">Delete</button>
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="add-product-modal" tabindex="-1"  aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Add Product</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="add-form">
+                    <div class="form-group">
+                        <label>Name * </label>
+                        <input type="text" name="name" id="add-name" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label>Description * </label>
+                        <textarea id="add-description" name="description" class="form-control"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Price * </label>
+                        <input type="number" name="price" id="add-price" class="form-control" />
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" onclick="UpsertProductEvent(event,'add')">Add</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="update-product-modal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Update Product</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="update-form">
+                    <input type="hidden" name="id" value="" id="update-id" />
+                    <div class="form-group">
+                        <label>Name * </label>
+                        <input type="text" name="name" id="update-name" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label>Description * </label>
+                        <textarea id="update-description" name="description" class="form-control"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Price * </label>
+                        <input type="number" name="price" id="update-price" class="form-control" />
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" onclick="UpsertProductEvent(event,'update')">Update</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script src="~/js/homeindex.js" asp-append-version="true"></script>
+}
